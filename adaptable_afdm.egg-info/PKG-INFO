@@ -1,0 +1,12 @@
+Metadata-Version: 2.1
+Name: adaptable_afdm
+Version: 0.1
+Summary: Modular simulation library
+Home-page: a
+Author: Pablo Diez Silva
+Author-email: pablodiezsilva@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Dist: numpy
+Requires-Dist: matplotlib
