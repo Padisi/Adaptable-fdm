@@ -1,0 +1,20 @@
+{
+	"T":1,
+	"dt":0.0005,
+	"nSteps":1000000,
+	"nWrite":50000,
+
+	"Nx":100,
+	"Ny":100,
+	"Nz":100,
+	"Lx":10,
+
+	"height":1,
+	"width":1,
+    "electrodeWidth":1,
+
+	"N":10000,
+	"epsilon":1.0,
+	"sigma":0.1,
+	"polarizability":-300.0
+}
