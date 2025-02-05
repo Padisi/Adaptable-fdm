@@ -1,7 +1,8 @@
-name: Adaptable-fdm
+name: adaptable_fdm
 channels:
   - conda-forge
 dependencies:
   - python
   - numpy
   - pip
+  - pytest
