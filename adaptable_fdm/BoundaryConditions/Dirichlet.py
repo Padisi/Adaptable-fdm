@@ -32,7 +32,7 @@ class Dirichlet(BoundaryCondition):
         :param gridData: An instance of the GridData class to which the boundary condition is applied.
         :return: A string indicating that the boundary condition has been applied.
         """
-        gridData.newPhi[self.mask] = self.value  # Set the boundary condition value in the grid
+        gridData.new_values[self.mask] = self.value  # Set the boundary condition value in the grid
         return f"Applying Dirichlet boundary condition with value {self.value}"
 
     def __str__(self):

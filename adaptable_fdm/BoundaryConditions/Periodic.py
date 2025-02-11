@@ -43,7 +43,7 @@ class Periodic(BoundaryCondition):
         :param gridData: An instance of the GridData class to which the boundary condition is applied.
         :return: A string indicating that the periodic boundary condition has been applied.
         """
-        gridData.newPhi = self._periodic_axis(gridData.newPhi)  # Apply the periodic transformation
+        gridData.new_values = self._periodic_axis(gridData.new_values)  # Apply the periodic transformation
         return "Applying Periodic boundary condition"
 
     def __str__(self):

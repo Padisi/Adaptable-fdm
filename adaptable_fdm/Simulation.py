@@ -18,7 +18,7 @@ class Simulation:
         self.gridData = gridData  # Grid data for the simulation
         self.integrator = integrator  # Integrator for updating the state
         self.bcList = boundaryConditionsList  # List of boundary conditions
-        self.toleranceChecker = Checker  # Tolerance checker for convergence
+        self.checker = Checker  # Checker for convergence
 
     def start(self):
         """
@@ -26,7 +26,8 @@ class Simulation:
 
         This method runs the simulation loop, continuing until the tolerance checker indicates convergence.
         """
-        while self.toleranceChecker.checker == False:  # Continue until tolerance is met
+        integrator.initialize_auxilary_grids(gridData)
+        while self.checker.checker == False:  # Continue until checker is True
             self.step()  # Perform a simulation step
 
     def step(self):

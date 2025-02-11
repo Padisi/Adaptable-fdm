@@ -3,7 +3,7 @@ import numpy as np
 class GridData:
     """
     Class to manage and store grid data for a 3D box with arbitrary dimensions and number of cells.
-    It computes grid coordinates, cell sizes, and initializes the Phi and Eps arrays.
+    It computes grid coordinates, cell sizes, and initializes the values and Eps arrays.
     """
 
     def __init__(self, Box, N):
@@ -25,8 +25,7 @@ class GridData:
 
         # Calculate and store the cell distances
         self._check_errors()
-        self.Phi = np.zeros(self.N)  # Initialize the Phi array with zeros
-        self.Eps = np.ones(self.N)   # Initialize the Eps array with ones
+        self.values = np.zeros(self.N)  # Initialize the values array with zeros
 
         # Create the grid of coordinates
         x = []
@@ -35,7 +34,9 @@ class GridData:
 
         self.pos = np.meshgrid(*x, indexing="ij")  # Create grid positions
 
-        self.newPhi = self.Phi * 1  # Copy of the Phi array
+        self.new_values = self.values * 1  # Copy of the values array
+
+        self.auxiliar_grids = {}
 
     def _check_errors(self):
         """
@@ -56,3 +57,11 @@ class GridData:
         for i in range(len(d) - 1):
             if d[i] != d[i + 1]:
                 raise ValueError("Cells are not homogeneous in size.")
+
+    def add_grid(self, name, initial_value=0):
+        """Add a new grid withe the same lenght of values"""
+        self.auxiliar_grids[name] = np.full_like(self.values, initial_value)
+
+    def get_grid(self, name):
+        """Get a grid with its name"""
+        return self.auxiliar_grids.get(name, None)

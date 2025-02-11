@@ -49,7 +49,7 @@ class Neumann(BoundaryCondition):
         :param gridData: An instance of the GridData class to which the boundary condition is applied.
         :return: A string indicating that the periodic boundary condition has been applied.
         """
-        gridData.newPhi = self._neumann_wall(gridData.newPhi)  # Apply the Neumann wall transformation
+        gridData.new_values = self._neumann_wall(gridData.new_values)  # Apply the Neumann wall transformation
         return "Applying Periodic boundary condition"
 
     def __str__(self):
@@ -96,7 +96,7 @@ class NeumannFlatX(BoundaryCondition):
         :param gridData: An instance of the GridData class to which the boundary condition is applied.
         :return: A string indicating that the Neumann boundary condition has been applied.
         """
-        gridData.newPhi[self.h, :, :][self.mask[self.h, :, :]] = gridData.Phi[self.h + self.add, :, :][self.mask[self.h + self.add, :, :]]
+        gridData.new_values[self.h, :, :][self.mask[self.h, :, :]] = gridData.values[self.h + self.add, :, :][self.mask[self.h + self.add, :, :]]
         return f"Applying Neumann boundary condition with value"
 
     def __str__(self):
@@ -121,7 +121,7 @@ class NeumannFlatY(NeumannFlatX):
         :param gridData: An instance of the GridData class to which the boundary condition is applied.
         :return: A string indicating that the Neumann boundary condition has been applied.
         """
-        gridData.newPhi[:, self.h, :][self.mask[:, self.h, :]] = gridData.Phi[:, self.h + self.add, :][self.mask[:, self.h + self.add, :]]
+        gridData.new_values[:, self.h, :][self.mask[:, self.h, :]] = gridData.values[:, self.h + self.add, :][self.mask[:, self.h + self.add, :]]
         return f"Applying Neumann boundary condition with value"
 
 
@@ -138,5 +138,5 @@ class NeumannFlatZ(NeumannFlatX):
         :param gridData: An instance of the GridData class to which the boundary condition is applied.
         :return: A string indicating that the Neumann boundary condition has been applied.
         """
-        gridData.newPhi[:, :, self.h][self.mask[:, :, self.h]] = gridData.Phi[:, :, self.h + self.add][self.mask[:, :, self.h + self.add]]
+        gridData.new_values[:, :, self.h][self.mask[:, :, self.h]] = gridData.values[:, :, self.h + self.add][self.mask[:, :, self.h + self.add]]
         return f"Applying Neumann boundary condition with value"

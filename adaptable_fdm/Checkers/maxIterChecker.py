@@ -1,16 +1,16 @@
 import numpy as np
 from .CheckerBase import checkerBase
 
-class toleranceChecker(checkerBase):
+class maxitersChecker(checkerBase):
     """
-    Class for checking convergence based on a specified tolerance and maximum iterations.
+    Class for checking maximum iterations.
     This class inherits from checkerBase and implements the logic to determine
     if the solution has converged within the given tolerance.
     """
 
-    def __init__(self, tol, max_iter, relaxation_factor):
+    def __init__(self, max_iter):
         """
-        Constructor for the toleranceChecker class.
+        Constructor for the maxIterChecker class.
 
         :param tol: The tolerance level for convergence. The simulation stops if the difference
                     between the new and old values is less than this value.
@@ -19,10 +19,8 @@ class toleranceChecker(checkerBase):
                                   influence of the new values.
         """
         super().__init__()  # Initialize the base class
-        print("[toleranceChecker] Created with tol=", tol, " max_iter=", max_iter, " relaxation_factor=", relaxation_factor)  # Print initialization details
-        self.tol = tol  # Set tolerance level
+        print("[maxIterChecker] Created with tol=", tol, " max_iter=", max_iter, " relaxation_factor=", relaxation_factor)  # Print initialization details
         self.max_iter = max_iter  # Set maximum iterations
-        self.relaxation_factor = relaxation_factor  # Set relaxation factor
 
     def check(self, gridData):
         """
@@ -37,26 +35,16 @@ class toleranceChecker(checkerBase):
             print(f'Convergence achieved in {self.iters} iterations.')  # Print convergence message
             self.checker = True  # Update checker status
 
+    def actualize(self, gridData):
+        """
+        Update the grid data and check for convergence. Increment the iteration count.
+
+        :param gridData: An instance of the GridData class that contains the current state of the grid.
+        """
+        self.checkTol(gridData)  # Check if convergence is achieved
+        gridData.values = (self.relaxation_factor * gridData.new_values +
+                        (1 - self.relaxation_factor) * gridData.values)  # Update grid data using relaxation factor
         if self.iters > self.max_iter:  # Check if maximum iterations are reached
             print(f"Reached Max Iter without convergence")  # Print message for maximum iterations
             self.checker = True  # Update checker status
-
-    def update(self, gridData):
-        """
-        Update the grid data and check for convergence. Increment the iteration count.
-
-        :param gridData: An instance of the GridData class that contains the current state of the grid.
-        """
-        gridData.values = (self.relaxation_factor * gridData.new_values +
-                        (1 - self.relaxation_factor) * gridData.values)  # Update grid data using relaxation factor
-
-    def step(self, gridData):
-        """
-        Update the grid data and check for convergence. Increment the iteration count.
-
-        :param gridData: An instance of the GridData class that contains the current state of the grid.
-        """
-        self.check(gridData)  # Check if convergence is achieved
-        gridData.values = (self.relaxation_factor * gridData.new_values +
-                        (1 - self.relaxation_factor) * gridData.values)  # Update grid data using relaxation factor
         self.iters += 1  # Increment iteration count
