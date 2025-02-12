@@ -49,14 +49,3 @@ class toleranceChecker(checkerBase):
         """
         gridData.values = (self.relaxation_factor * gridData.new_values +
                         (1 - self.relaxation_factor) * gridData.values)  # Update grid data using relaxation factor
-
-    def step(self, gridData):
-        """
-        Update the grid data and check for convergence. Increment the iteration count.
-
-        :param gridData: An instance of the GridData class that contains the current state of the grid.
-        """
-        self.check(gridData)  # Check if convergence is achieved
-        gridData.values = (self.relaxation_factor * gridData.new_values +
-                        (1 - self.relaxation_factor) * gridData.values)  # Update grid data using relaxation factor
-        self.iters += 1  # Increment iteration count

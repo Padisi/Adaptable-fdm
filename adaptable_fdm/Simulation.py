@@ -26,7 +26,7 @@ class Simulation:
 
         This method runs the simulation loop, continuing until the tolerance checker indicates convergence.
         """
-        integrator.initialize_auxilary_grids(gridData)
+        self.integrator.initialize_auxiliary_grids(self.gridData)
         while self.checker.checker == False:  # Continue until checker is True
             self.step()  # Perform a simulation step
 
@@ -44,4 +44,4 @@ class Simulation:
             boundary.apply(self.gridData)
 
         # Update the tolerance checker
-        self.toleranceChecker.actualize(self.gridData)
+        self.checker.step(self.gridData)

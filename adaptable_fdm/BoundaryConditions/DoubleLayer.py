@@ -14,7 +14,7 @@ class DoubleLayerX(BoundaryCondition):
 
     This is implemented by doing:
 
-    φ(i) = [φ(i+1)*A-V_0*h]/[A-h]
+    φ(i) = [φ(i+1)*self.constant-self.V_0*h]/[A-h]
 
     where h is the cellSize
     """
@@ -41,6 +41,8 @@ class DoubleLayerX(BoundaryCondition):
             raise ValueError("[BoundaryConditions] " + name + " add parameter must be -1 or 1")
         self.add = add  # Direction of the derivative
         self.mask = mask  # Mask for applying the condition
+        self.constant = constant
+        self.V_0 = V_0
         print("[BoundaryConditions] " + str(self) + " boundary cell index = ", self.h)
 
     def apply(self, gridData):
@@ -50,7 +52,7 @@ class DoubleLayerX(BoundaryCondition):
         :param gridData: An instance of the GridData class to which the boundary condition is applied.
         :return: A string indicating that the DoubleLayer boundary condition has been applied.
         """
-        gridData.new_values[self.h, :, :][self.mask[self.h, :, :]] = (gridData.values[self.h + self.add, :, :][self.mask[self.h + self.add, :, :]]*A-V_0*cellSize)/(A-cellSize)
+        gridData.new_values[self.h, :, :][self.mask[self.h, :, :]] = (gridData.values[self.h + self.add, :, :][self.mask[self.h + self.add, :, :]]*self.constant-self.V_0*gridData.h)/(self.constant-gridData.h)
         return f"Applying DoubleLayer boundary condition with value"
 
     def __str__(self):
@@ -75,7 +77,7 @@ class DoubleLayerY(DoubleLayerX):
         :param gridData: An instance of the GridData class to which the boundary condition is applied.
         :return: A string indicating that the DoubleLayer boundary condition has been applied.
         """
-        gridData.new_values[:, self.h, :][self.mask[:, self.h, :]] = (gridData.values[:, self.h + self.add, :][self.mask[:, self.h + self.add, :]]*A-V_0*cellSize)/(A-cellSize)
+        gridData.new_values[:, self.h, :][self.mask[:, self.h, :]] = (gridData.values[:, self.h + self.add, :][self.mask[:, self.h + self.add, :]]*self.constant-self.V_0*gridData.h)/(self.constant-gridData.h)
         return f"Applying DoubleLayer boundary condition with value"
 
 
@@ -92,5 +94,5 @@ class DoubleLayerZ(DoubleLayerX):
         :param gridData: An instance of the GridData class to which the boundary condition is applied.
         :return: A string indicating that the DoubleLayer boundary condition has been applied.
         """
-        gridData.new_values[:, :, self.h][self.mask[:, :, self.h]] = (gridData.values[:, :, self.h + self.add][self.mask[:, :, self.h + self.add]]*A-V_0*cellSize)/(A-cellSize)
+        gridData.new_values[:, :, self.h][self.mask[:, :, self.h]] = (gridData.values[:, :, self.h + self.add][self.mask[:, :, self.h + self.add]]*self.constant-self.V_0*gridData.h)/(self.constant-gridData.h)
         return f"Applying DoubleLayer boundary condition with value"
