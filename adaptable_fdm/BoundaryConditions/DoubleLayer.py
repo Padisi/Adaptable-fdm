@@ -43,7 +43,7 @@ class DoubleLayerX(BoundaryCondition):
         self.mask = mask  # Mask for applying the condition
         self.constant = constant
         self.V_0 = V_0
-        print("[BoundaryConditions] " + str(self) + " boundary cell index = ", self.h)
+        print("[BoundaryConditions] " + str(self) + " boundary cell index = ", self.h, "Impedance value = ", self.constant, "Voltage = ", self.V0)
 
     def apply(self, gridData):
         """

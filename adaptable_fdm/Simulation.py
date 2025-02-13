@@ -29,6 +29,7 @@ class Simulation:
         self.integrator.initialize_auxiliary_grids(self.gridData)
         while self.checker.checker == False:  # Continue until checker is True
             self.step()  # Perform a simulation step
+        print("[Simulation] END \n")
 
     def step(self):
         """
