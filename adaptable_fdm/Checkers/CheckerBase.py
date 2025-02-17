@@ -23,7 +23,7 @@ class checkerBase:
 
     def update(self, gridData):
         """
-        Update the state of gridData as you want (normally gridData.new = gridData.old)
+        Update the state of gridData as you want (normally gridData.values = gridData.new_values)
         """
         return 0
 

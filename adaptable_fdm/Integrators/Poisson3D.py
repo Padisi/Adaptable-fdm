@@ -12,7 +12,7 @@ class Poisson3D(IntegratorBase):
         self.name = "poisson3D"
 
     def update(self,gridData):
-        values = gridData.values
+        values = gridData.values.copy()
         gridData.new_values[1:-1,1:-1,1:-1] = (1 / 6) * (values[1:-1,2:,1:-1] +
                                                         values[1:-1,0:-2,1:-1] +
                                                         values[2:,1:-1,1:-1] +

@@ -50,7 +50,7 @@ class Neumann(BoundaryCondition):
         :return: A string indicating that the periodic boundary condition has been applied.
         """
         gridData.new_values = self._neumann_wall(gridData.new_values)  # Apply the Neumann wall transformation
-        return "Applying Periodic boundary condition"
+        return "Applying Neumann boundary condition"
 
     def __str__(self):
         """
@@ -58,7 +58,7 @@ class Neumann(BoundaryCondition):
 
         :return: A string describing the boundary condition, including its name and coordinate.
         """
-        return f"Periodic: {self.name}, coordinate: {self.coord}"
+        return f"Neumann: {self.name}, coordinate: {self.coord}"
 
 
 class NeumannFlatX(BoundaryCondition):

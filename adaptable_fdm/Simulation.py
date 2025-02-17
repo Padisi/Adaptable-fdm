@@ -30,6 +30,7 @@ class Simulation:
         while self.checker.checker == False:  # Continue until checker is True
             self.step()  # Perform a simulation step
         print("[Simulation] END \n")
+        return self.gridData
 
     def step(self):
         """
@@ -38,6 +39,7 @@ class Simulation:
         This method updates the simulation state using the integrator and applies boundary conditions.
         It also updates the tolerance checker after each step.
         """
+
         self.integrator.update(self.gridData)  # Update the state with the integrator
 
         # Apply boundary conditions

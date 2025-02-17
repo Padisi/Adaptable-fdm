@@ -37,11 +37,13 @@ class DoubleLayerX(BoundaryCondition):
         self.h = int(np.ceil(height / cellSize)) - 1  # Calculate the wall index
         if self.h < 0:
             self.h = 0  # Ensure the index is non-negative
+            print("[Boundary Conditions] WARNING, height can't be negative, simulation set height to 0")
         if (add != -1) and (add != 1):
             raise ValueError("[BoundaryConditions] " + name + " add parameter must be -1 or 1")
         self.add = add  # Direction of the derivative
         self.mask = mask  # Mask for applying the condition
         self.constant = constant
+        self.cellSize = cellSize
         self.V_0 = V_0
         print("[BoundaryConditions] " + str(self) + " boundary cell index = ", self.h, "Impedance value = ", self.constant, "Voltage = ", self.V_0)
 
@@ -52,7 +54,7 @@ class DoubleLayerX(BoundaryCondition):
         :param gridData: An instance of the GridData class to which the boundary condition is applied.
         :return: A string indicating that the DoubleLayer boundary condition has been applied.
         """
-        gridData.new_values[self.h, :, :][self.mask[self.h, :, :]] = (gridData.values[self.h + self.add, :, :][self.mask[self.h + self.add, :, :]]*self.constant-self.V_0*gridData.h)/(self.constant-gridData.h)
+        gridData.new_values[self.h,:,:] = (gridData.new_values[self.h+self.add]*self.constant+self.V_0*self.cellSize)/(self.constant+self.cellSize)
         return f"Applying DoubleLayer boundary condition with value"
 
     def __str__(self):

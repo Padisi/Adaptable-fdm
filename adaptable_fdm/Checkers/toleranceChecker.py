@@ -33,7 +33,9 @@ class toleranceChecker(checkerBase):
 
         :param gridData: An instance of the GridData class that contains the current state of the grid.
         """
-        if np.max(np.abs(gridData.new_values - gridData.values)) < self.tol:  # Check for convergence
+
+        error = np.max(np.abs(gridData.new_values - gridData.values))
+        if error < self.tol:  # Check for convergence
             print(f'Convergence achieved in {self.iters} iterations.')  # Print convergence message
             self.checker = True  # Update checker status
 

@@ -3,7 +3,18 @@ import numpy as np
 class GridData:
     """
     Class to manage and store grid data for a 3D box with arbitrary dimensions and number of cells.
-    It computes grid coordinates, cell sizes, and initializes the values and Eps arrays.
+    It computes grid coordinates, cell sizes, and initializes the values.
+
+
+    For now, grids in afdm are regular, homogeneus grids. With one phantom cell in each border of the dimensions.
+    Values are centered at the grid faces, and phantom cells are beyond the limits. So phantom cell is collocated at
+    -L/2-h/2 and L/2+h/2, and first real cell is collocated at -L/2+h/2.
+
+       |  P  |  P |  P |  P |  P  |
+       |  P  |  1 |  2 |  3 |  P  |
+       |  P  |  4 |  5 |  6 |  P  |
+       |  P  |  7 |  8 |  9 |  P  |
+       |  P  |  P |  P |  P |  P  |
     """
 
     def __init__(self, Box, N):
@@ -25,16 +36,16 @@ class GridData:
 
         # Calculate and store the cell distances
         self._check_errors()
-        self.values = np.zeros(self.N)  # Initialize the values array with zeros
+        self.values = np.zeros([n+2 for n in self.N])  # Initialize the values array with zeros
 
         # Create the grid of coordinates
         x = []
         for L, N in zip(self.Box, self.N):
-            x.append(np.linspace(-L/2, L/2, N))  # *x returns unpacked arrays in a list of arrays
+            x.append(np.linspace(-L/2-self.h/2, L/2+self.h/2, N+2))  # *x returns unpacked arrays in a list of arrays
 
         self.pos = np.meshgrid(*x, indexing="ij")  # Create grid positions
 
-        self.new_values = self.values * 1  # Copy of the values array
+        self.new_values = self.values.copy()  # Copy of the values array
 
         self.auxiliar_grids = {}
 
@@ -50,7 +61,7 @@ class GridData:
                 raise ValueError("Ncells must be an integer.")
 
         # Calculate the size of the cells in each dimension
-        d = [self.Box[i] / self.N[i] for i in range(len(self.Box))]
+        d = [self.Box[i] / (self.N[i]) for i in range(len(self.Box))]
         self.h = d[0]  # Store the size of the cells (assuming homogeneous grid)
 
         # Check if cells are homogeneous in size
