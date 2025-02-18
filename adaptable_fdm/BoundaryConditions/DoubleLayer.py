@@ -54,7 +54,7 @@ class DoubleLayerX(BoundaryCondition):
         :param gridData: An instance of the GridData class to which the boundary condition is applied.
         :return: A string indicating that the DoubleLayer boundary condition has been applied.
         """
-        gridData.new_values[self.h,:,:] = (gridData.new_values[self.h+self.add]*self.constant+self.V_0*self.cellSize)/(self.constant+self.cellSize)
+        gridData.new_values[self.h, :, :][self.mask[self.h, :, :]] = (gridData.values[self.h + self.add, :, :][self.mask[self.h + self.add, :, :]]*self.constant+self.V_0*gridData.h)/(self.constant+gridData.h)
         return f"Applying DoubleLayer boundary condition with value"
 
     def __str__(self):
@@ -79,7 +79,7 @@ class DoubleLayerY(DoubleLayerX):
         :param gridData: An instance of the GridData class to which the boundary condition is applied.
         :return: A string indicating that the DoubleLayer boundary condition has been applied.
         """
-        gridData.new_values[:, self.h, :][self.mask[:, self.h, :]] = (gridData.values[:, self.h + self.add, :][self.mask[:, self.h + self.add, :]]*self.constant-self.V_0*gridData.h)/(self.constant-gridData.h)
+        gridData.new_values[:, self.h, :][self.mask[:, self.h, :]] = (gridData.values[:, self.h + self.add, :][self.mask[:, self.h + self.add, :]]*self.constant+self.V_0*gridData.h)/(self.constant+gridData.h)
         return f"Applying DoubleLayer boundary condition with value"
 
 
@@ -96,5 +96,5 @@ class DoubleLayerZ(DoubleLayerX):
         :param gridData: An instance of the GridData class to which the boundary condition is applied.
         :return: A string indicating that the DoubleLayer boundary condition has been applied.
         """
-        gridData.new_values[:, :, self.h][self.mask[:, :, self.h]] = (gridData.values[:, :, self.h + self.add][self.mask[:, :, self.h + self.add]]*self.constant-self.V_0*gridData.h)/(self.constant-gridData.h)
+        gridData.new_values[:, :, self.h][self.mask[:, :, self.h]] = (gridData.values[:, :, self.h + self.add][self.mask[:, :, self.h + self.add]]*self.constant+self.V_0*gridData.h)/(self.constant+gridData.h)
         return f"Applying DoubleLayer boundary condition with value"
