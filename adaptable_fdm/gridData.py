@@ -66,7 +66,7 @@ class GridData:
 
         # Check if cells are homogeneous in size
         for i in range(len(d) - 1):
-            if d[i] != d[i + 1]:
+            if np.isclose(d[i], d[i + 1],rtol=1e-5, atol=1e-8) == False:
                 raise ValueError("Cells are not homogeneous in size.")
 
     def add_grid(self, name, initial_value=0):
