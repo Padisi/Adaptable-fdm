@@ -65,10 +65,8 @@ class GridData:
         self.h = d[0]  # Store the size of the cells (assuming homogeneous grid)
 
         # Check if cells are homogeneous in size
-        for i in range(len(d) - 1):
-            if np.isclose(d[i], d[i + 1],rtol=1e-5, atol=1e-8) == False:
-                raise ValueError("Cells are not homogeneous in size.")
-
+        if not all(np.isclose(d[i], d[0]) for i in range(1, len(d))):
+            raise ValueError(f"Cells must be homogeneous in size, but h is {d}.")
     def add_grid(self, name, initial_value=0):
         """Add a new grid withe the same lenght of values"""
         self.auxiliar_grids[name] = np.full_like(self.values, initial_value)
