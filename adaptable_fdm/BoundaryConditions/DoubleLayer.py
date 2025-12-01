@@ -45,7 +45,7 @@ class DoubleLayerX(BoundaryCondition):
         self.constant = constant
         self.cellSize = cellSize
         self.V_0 = V_0
-        print("[BoundaryConditions] " + str(self) + " boundary cell index = ", self.h, "Impedance value = ", self.constant, "Voltage = ", self.V_0)
+        print("[BoundaryConditions] " + str(self) + " boundary cell index = ", self.h, "Non Dimensional frequency = ", 1/self.constant, "Voltage = ", self.V_0)
 
     def apply(self, gridData):
         """

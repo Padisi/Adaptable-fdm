@@ -2,7 +2,7 @@ from .IntegratorBase import IntegratorBase
 
 class Poisson3D(IntegratorBase):
 
-    def __init__(self):
+    def __init__(self, mixing=1.0)):
         """
         Poisson3D solve by a iterative method the Poisson equation withour charges
         ∇φ = 0
@@ -10,6 +10,7 @@ class Poisson3D(IntegratorBase):
         super().__init__()
         print("[Poisson3D] Integrator created")
         self.name = "poisson3D"
+        self.mixing = mixing
 
     def update(self,gridData):
         values = gridData.values.copy()
@@ -18,10 +19,12 @@ class Poisson3D(IntegratorBase):
                                                         values[2:,1:-1,1:-1] +
                                                         values[0:-2,1:-1,1:-1]+
                                                         values[1:-1,1:-1,2:] +
-                                                        values[1:-1,1:-1,0:-2])
+                                                        values[1:-1,1:-1,0:-2]) * self.mixing + values[1:-1,1:-1,1:-1] * (1 - self.mixing)
+
+
 class Poisson3D_eps(IntegratorBase):
 
-    def __init__(self,eps):
+    def __init__(self,eps, mixing=1.0):
         """
         Poisson3D solve by a iterative method the Poisson equation withour charges
         nabla(phi) = 0
@@ -30,6 +33,7 @@ class Poisson3D_eps(IntegratorBase):
         self.name = "Poisson3D_eps"
         print("["+self.name+"] Created")
         self.eps  = eps
+        self.mixing = mixing
 
     def initialize_auxiliary_grids(self, gridData):
         """
@@ -41,7 +45,9 @@ class Poisson3D_eps(IntegratorBase):
 
     def update(self,gridData):
         values = gridData.values
-        Eps = gridData.get_grid("eps")
+        try :
+            Eps = gridData.get_grid("eps")
+        except KeyError:
 
         EpsX2 = (Eps[:-1,:,:]+Eps[1:,:,:])/2
         EpsY2 = (Eps[:,:-1,:]+Eps[:,1:,:])/2
@@ -52,3 +58,25 @@ class Poisson3D_eps(IntegratorBase):
                                      EpsZ2[1:-1,1:-1,1:]*values[1:-1,1:-1,2:]+EpsZ2[1:-1,1:-1,:-1]*values[1:-1,1:-1,:-2])/(
                                      EpsX2[1:,1:-1,1:-1]+EpsX2[:-1,1:-1,1:-1] + EpsY2[1:-1,1:,1:-1]+EpsY2[1:-1,:-1,1:-1] + EpsZ2[1:-1,1:-1,1:]+EpsZ2[1:-1,1:-1,:-1])
 
+
+class Poisson3D_Inhomogeneus(IntegratorBase):
+    def __init__(self, inh_part, mixing=1.0)):
+        """
+        Poisson3D solve by a iterative method the Poisson equation with charges
+        ∇φ = - ρ/ε0
+        """
+        super().__init__()
+        print("[Poisson3D_Inhomogeneus] Integrator created")
+        self.name = "poisson3D_inhomogeneus"
+        self.inh_part = inh_part
+        self.mixing = mixing
+
+    def update(self, gridData):
+        values = gridData.values.copy()
+        gridData.new_values[1:-1,1:-1,1:-1] = (1 / 6) * (values[1:-1,2:,1:-1] +
+                                                        values[1:-1,0:-2,1:-1] +
+                                                        values[2:,1:-1,1:-1] +
+                                                        values[0:-2,1:-1,1:-1]+
+                                                        values[1:-1,1:-1,2:] +
+                                                        values[1:-1,1:-1,0:-2] +
+                                                        self.inh_part[1:-1,1:-1,1:-1]*gridData.h*gridData.h) * self.mixing + values[1:-1,1:-1,1:-1] * (1 - self.mixing)
