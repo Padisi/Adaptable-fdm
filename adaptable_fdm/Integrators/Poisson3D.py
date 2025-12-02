@@ -48,6 +48,7 @@ class Poisson3D_eps(IntegratorBase):
         try :
             Eps = gridData.get_grid("eps")
         except KeyError:
+            raise KeyError("["+self.name+"] eps grid not found in GridData. Please, initialize it before calling update().")
 
         EpsX2 = (Eps[:-1,:,:]+Eps[1:,:,:])/2
         EpsY2 = (Eps[:,:-1,:]+Eps[:,1:,:])/2
@@ -59,7 +60,7 @@ class Poisson3D_eps(IntegratorBase):
                                      EpsX2[1:,1:-1,1:-1]+EpsX2[:-1,1:-1,1:-1] + EpsY2[1:-1,1:,1:-1]+EpsY2[1:-1,:-1,1:-1] + EpsZ2[1:-1,1:-1,1:]+EpsZ2[1:-1,1:-1,:-1])
 
 
-class Poisson3D_Inhomogeneus(IntegratorBase):
+class Poisson3D_Inhomogeneous(IntegratorBase):
     def __init__(self, inh_part, mixing=1.0):
         """
         Poisson3D solve by a iterative method the Poisson equation with charges
