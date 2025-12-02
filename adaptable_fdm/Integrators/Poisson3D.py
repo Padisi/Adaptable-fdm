@@ -2,7 +2,7 @@ from .IntegratorBase import IntegratorBase
 
 class Poisson3D(IntegratorBase):
 
-    def __init__(self, mixing=1.0)):
+    def __init__(self, mixing=1.0):
         """
         Poisson3D solve by a iterative method the Poisson equation withour charges
         ∇φ = 0
@@ -60,7 +60,7 @@ class Poisson3D_eps(IntegratorBase):
 
 
 class Poisson3D_Inhomogeneus(IntegratorBase):
-    def __init__(self, inh_part, mixing=1.0)):
+    def __init__(self, inh_part, mixing=1.0):
         """
         Poisson3D solve by a iterative method the Poisson equation with charges
         ∇φ = - ρ/ε0
